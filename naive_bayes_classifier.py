@@ -54,14 +54,18 @@ def p_dic(dataset, cset, attris):
 def predic(p_dic, testdata):
     p_xi_c = 1
     index = 0
-    for key in p_dic.keys():
+    for key in p_dic:
         # print(p_dic[key])
-        if 'mean'and 'std'in p_dic[key]:  # 连续值
+        if 'mean' in p_dic[key] and 'std' in p_dic[key]:  # 连续值
             # print('continuos')
-            p_xi = (np.exp(-((float(testdata[index])-float(p_dic[key]['mean']))**2)
-                          /2*(float(p_dic[key]['std'])**2)))/(((2*math.pi)**0.5)*(float(p_dic[key]['std'])))
+            # p_xi = (np.exp(-((float(testdata[index])-float(p_dic[key]['mean']))**2)
+            #               /(2*(float(p_dic[key]['std'])**2))))/(((2*math.pi)**0.5)*(float(p_dic[key]['std'])))
             # print(p_xi)
-            # p_xi = norm(float(p_dic[key]['mean']), float(p_dic[key]['std'])).cdf(float(testdata[index]))
+            #p_xi = norm(float(p_dic[key]['mean']), float(p_dic[key]['std'])).pdf(float(testdata[index]))
+            p_xi = norm.pdf( float(testdata[index]),
+                             float(p_dic[key]['mean']), 
+                             float(p_dic[key]['std']) )
+            
             # print(p_xi)
         else:
             p_xi = float(p_dic[key].setdefault(testdata[index]))
